@@ -2,10 +2,10 @@ from os import path
 # CONSTANTS
 # game
 TITLE = "Hello world!"
-FPS = 30
+FPS = 60
 
 # window
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 600, 800
 
 # colors
 BLACK = (0, 0, 0)

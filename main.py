@@ -1,6 +1,7 @@
-from settings import *
+from random import randint
 import pygame
 from pygame.locals import *
+from settings import *
 
 
 class Game:
@@ -46,6 +47,7 @@ class Game:
         # draw events
         self.screen.fill(BLACK)
         self.all_sprites.draw(self.screen)
+        # flip display after draw events
         pygame.display.flip()
 
     def show_splash(self):
