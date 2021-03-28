@@ -162,12 +162,14 @@ class Game:
         # new high score
         if self.score > self.high_score:
             self.high_score = self.score
-            self.draw_text("New high score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            self.draw_text("New high score!", 22, WHITE,
+                           WIDTH / 2, HEIGHT / 2 + 40)
             with open(path.join(self.dir, SCORE_FILE), 'w') as f:
                 f.write(str(self.score))
         # show high_score
         else:
-            self.draw_text("High score: " + str(self.high_score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            self.draw_text("High score: " + str(self.high_score),
+                           22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
 
         # update display and wait for input
         pygame.display.flip()

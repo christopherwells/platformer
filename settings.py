@@ -18,15 +18,12 @@ PINK = (255, 0, 255)
 YELLOW = (255, 255, 0)
 SKY = (0, 155, 155)
 
-# sprite specific
-TILE_SIZE = 32
-
 # player
 PLAYER_ACC = 0.75
 PLAYER_FRICTION = -0.11
 PLAYER_GRAVITY = 0.6
 
-# splash screen
+# starting blocks
 BLOCK_LIST = [(0, HEIGHT - 40, WIDTH, 40),
               (WIDTH / 2 - 50, HEIGHT * 3 / 4, 100, 20),
               (125, HEIGHT - 350, 100, 20),
