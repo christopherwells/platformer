@@ -19,6 +19,11 @@ class Game:
         self.running = True
         self.game_font = pygame.font.match_font(GAME_FONT)
         self.load_data()
+        # load music
+        pygame.mixer.music.load(
+            path.join(self.snd_dir, 'Sycamore Drive - Happiness.ogg'))
+        # play music on loop
+        pygame.mixer.music.play(loops=-1)
 
     def load_data(self):
         self.dir = path.dirname(__file__)

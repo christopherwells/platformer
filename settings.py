@@ -35,7 +35,6 @@ BLOCK_LIST = [(0, HEIGHT - 60),
 GAME_FONT = 'Arial'
 SCORE_FILE = 'highscores.txt'
 game_folder = path.dirname(__file__)
-img_folder = path.join(game_folder, 'img')
 SPRITESHEET1 = 'tiles_sheet.png'
 SPRITESHEET2 = 'spritesheet_players.png'
 ANIMATION_SPEED = 200
