@@ -19,7 +19,8 @@ class Game:
         self.running = True
         self.game_font = pygame.font.match_font(GAME_FONT)
         self.load_data()
-        # load music
+        # load music - music from https://sycamoredrive.bandcamp.com/album/the-waves-the-sea
+        # available under cc license https://creativecommons.org/licenses/by-nc-sa/3.0/us/
         pygame.mixer.music.load(
             path.join(self.snd_dir, 'Sycamore Drive - Happiness.ogg'))
         # play music on loop
