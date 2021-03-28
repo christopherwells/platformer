@@ -14,7 +14,8 @@ class Spritesheet:
         image = pygame.Surface((w, h))
         # take from spritesheet and blit to (0,0) of image
         image.blit(self.spritesheet, (0, 0), (x, y, w, h))
-        image = pygame.transform.scale(image, (round(w // 1.6), round(h // 1.6)))
+        image = pygame.transform.scale(
+            image, (round(w // 1.6), round(h // 1.6)))
         return image
 
 
@@ -39,7 +40,8 @@ class Player(pygame.sprite.Sprite):
 
     def load_images(self):
         # standing images
-        self.standing_frame = self.game.spritesheet2.get_image(512, 1280, 128, 256)
+        self.standing_frame = self.game.spritesheet2.get_image(
+            512, 1280, 128, 256)
         self.standing_frame.set_colorkey(BLACK)
         # walking right images
         self.walking_frames_right = [
@@ -57,10 +59,12 @@ class Player(pygame.sprite.Sprite):
             768, 1536, 128, 256)
         self.jumping_frame.set_colorkey(BLACK)
         # falling image right
-        self.falling_frame_right = self.game.spritesheet2.get_image(512, 768, 128, 256)
+        self.falling_frame_right = self.game.spritesheet2.get_image(
+            512, 768, 128, 256)
         self.falling_frame_right.set_colorkey(BLACK)
         # falling image left
-        self.falling_frame_left = pygame.transform.flip(self.falling_frame_right, True, False)
+        self.falling_frame_left = pygame.transform.flip(
+            self.falling_frame_right, True, False)
         self.falling_frame_left.set_colorkey(BLACK)
 
     def jump(self):
@@ -170,7 +174,6 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.falling_frame_left
                 self.rect = self.image.get_rect()
                 self.rect.bottom = bottom
-
 
 
 class Block(pygame.sprite.Sprite):
