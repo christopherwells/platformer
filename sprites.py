@@ -48,6 +48,7 @@ class Player(pygame.sprite.Sprite):
         # collision check position
         self.rect.midbottom = self.pos
 
+
 class Block(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
         pygame.sprite.Sprite.__init__(self)

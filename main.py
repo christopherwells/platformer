@@ -1,4 +1,4 @@
-from random import randint
+from random import randrange, randint
 import pygame
 from pygame.locals import *
 from settings import *
@@ -58,7 +58,15 @@ class Game:
                 block.rect.y += abs(self.player.vel.y)
                 # remove old blocks
                 if block.rect.top >= HEIGHT:
-                    block.remove()
+                    block.kill()
+
+        # generate new blocks
+        while len(self.blocks) < 6:
+            w = randrange(50, 100)
+            b = Block(randrange(0, WIDTH - w), randrange(-75, -30), w, 20)
+            self.blocks.add(b)
+            self.all_sprites.add(b)
+
     def events(self):
         # pygame events
         for event in pygame.event.get():
