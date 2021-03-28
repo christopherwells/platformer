@@ -1,5 +1,6 @@
 # to run
 > pip install pygame
+> 
 > python main .py
 
 Space to jump, left and right arrow keys to move.
