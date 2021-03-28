@@ -61,6 +61,7 @@ class Game:
             self.draw()
             system('clear')
             print(self.clock)
+            print(self.player.vel)
 
     def update(self):
         # update
