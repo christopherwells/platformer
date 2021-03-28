@@ -22,7 +22,8 @@ class Spritesheet:
 class Player(pygame.sprite.Sprite):
     def __init__(self, game):
         self._layer = PLAYER_LAYER
-        pygame.sprite.Sprite.__init__(self)
+        self.groups = game.all_sprites
+        pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         # animation
         self.walking = False
@@ -70,17 +71,17 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         # can jump if on a block
-        self.rect.x += 2
+        self.rect.y += 2
         collision = pygame.sprite.spritecollide(self, self.game.blocks, False)
-        self.rect.x -= 2
+        self.rect.y -= 2
         # can jump
         if collision and not self.jumping and not self.walking:
             self.jumping = True
-            self.vel.y = PLAYER_JUMP
+            self.vel.y = -PLAYER_JUMP
         # moving before jump gives a boost
         if collision and not self.jumping and self.walking:
             self.jumping = True
-            self.vel.y = PLAYER_JUMP * 1.08
+            self.vel.y = -PLAYER_JUMP * 1.08
 
     def jump_cut(self):
         if self.jumping:
@@ -147,8 +148,7 @@ class Player(pygame.sprite.Sprite):
             if now - self.last_update > ANIMATION_SPEED:
                 self.last_update = now
                 # current frame will be standing frame
-                self.current_frame = (
-                    self.current_frame + 1)
+                self.current_frame += 1
                 # change animation frame, adjust image rect
                 bottom = self.rect.bottom
                 self.image = self.standing_frame
@@ -175,12 +175,15 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.falling_frame_left
                 self.rect = self.image.get_rect()
                 self.rect.bottom = bottom
+        # mask for collisions
+        self.mask = pygame.mask.from_surface(self.image)
 
 
 class Block(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
         self._layer = BLOCK_LAYER
-        pygame.sprite.Sprite.__init__(self)
+        self.groups = game.all_sprites, game.blocks
+        pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         # sprite
         images = [
@@ -230,10 +233,33 @@ class Mob(pygame.sprite.Sprite):
         # moving down
         else:
             self.image = self.image_down
+        self.rect = self.image.get_rect()
+        # collision mask
+        self.mask = pygame.mask.from_surface(self.image)
         # center image
         self.rect.center = center
         # move y
         self.rect.y += self.vy
         # kill if off screen too far
         if self.rect.left > WIDTH + 100 or self.rect.right < -100:
+            self.kill()
+
+
+class Cloud(pygame.sprite.Sprite):
+    def __init__(self, game):
+        self._layer = CLOUD_LAYER
+        self.groups = game.all_sprites, game.clouds
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = choice(self.game.cloud_images)
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        scale = randrange(50, 101) / 100
+        self.image = pygame.transform.scale(self.image, (int(self.rect.width * scale),
+                                                     int(self.rect.height * scale)))
+        self.rect.x = randrange(WIDTH - self.rect.width)
+        self.rect.y = randrange(-500, -50)
+
+    def update(self):
+        if self.rect.top > HEIGHT * 2:
             self.kill()

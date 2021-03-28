@@ -42,6 +42,11 @@ class Game:
         self.spritesheet1 = Spritesheet(path.join(img_dir, SPRITESHEET1))
         self.spritesheet2 = Spritesheet(path.join(img_dir, SPRITESHEET2))
         self.spritesheet3 = Spritesheet(path.join(img_dir, SPRITESHEET3))
+        # load cloud sprites
+        self.cloud_images = []
+        for i in range(1, 4):
+            self.cloud_images.append(pygame.image.load(
+                path.join(img_dir, 'cloud{}.png'.format(i))).convert())
         # load sounds
         self.snd_dir = path.join(self.dir, 'snd')
 
@@ -52,13 +57,16 @@ class Game:
         self.blocks = pygame.sprite.Group()
         self.mobs = pygame.sprite.Group()
         self.mob_timer = 0
+        self.clouds = pygame.sprite.Group()
         self.player = Player(self)
-        self.all_sprites.add(self.player)
         for b in BLOCK_LIST:
             # x,y
             block = Block(self, *b)
             self.all_sprites.add(block)
             self.blocks.add(block)
+        for i in range(8):
+            c = Cloud(self)
+            c.rect.y += 500
         self.loop()
 
     def loop(self):
@@ -69,9 +77,6 @@ class Game:
             self.update()
             self.events()
             self.draw()
-            system('clear')
-            print(self.clock)
-            print(self.player.vel)
 
     def update(self):
         # update
@@ -79,12 +84,13 @@ class Game:
 
         # spawn a mob
         now = pygame.time.get_ticks()
-        if now - self.mob_timer > 5000 + choice([-2000, -1500, -500, 500, 1000]):
+        if now - self.mob_timer > 5000 + choice([-1000, -500, 0]):
             self.mob_timer = now
             Mob(self)
 
         # collision detection with mobs
-        mob_collision = pygame.sprite.spritecollide(self.player, self.mobs, False)
+        mob_collision = pygame.sprite.spritecollide(
+            self.player, self.mobs, False, pygame.sprite.collide_mask)
         if mob_collision:
             self.playing = False
 
@@ -108,8 +114,14 @@ class Game:
 
         # if player reaches 3/4 height
         if self.player.rect.top <= HEIGHT / 4:
+            # chance of cloud
+            if randrange(100) < 1:
+                Cloud(self)
             # change y to velocity so the level can move
             self.player.pos.y += max(abs(self.player.vel.y), 2)
+            for cloud in self.clouds:
+                # move clouds down
+                cloud.rect.y += max(abs(self.player.vel.y / 2), 2)
             for mob in self.mobs:
                 # move mobs down at same velocity as player
                 mob.rect.y += max(abs(self.player.vel.y), 2)
@@ -134,11 +146,12 @@ class Game:
             self.playing = False
 
         # generate new blocks
-        while len(self.blocks) < 6:
+        while len(self.blocks) < 8:
             w = randrange(64, 128)
-            b = Block(self, randrange(0, WIDTH - w), randrange(-64, -32))
-            self.blocks.add(b)
-            self.all_sprites.add(b)
+            b = Block(self, randrange(0, WIDTH - w), randrange(-128, -32))
+
+        # if a block has collision with another block, remove one
+
 
     def events(self):
         # pygame events
