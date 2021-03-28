@@ -49,7 +49,16 @@ class Game:
             if collision:
                 self.player.pos.y = collision[0].rect.top + 1
                 self.player.vel.y = 0
-
+        # if player reaches 3/4 height
+        if self.player.rect.top <= HEIGHT / 4:
+            # change y to velocity so the level can move
+            self.player.pos.y += abs(self.player.vel.y)
+            for block in self.blocks:
+                # move blocks down at same velocity as player
+                block.rect.y += abs(self.player.vel.y)
+                # remove old blocks
+                if block.rect.top >= HEIGHT:
+                    block.remove()
     def events(self):
         # pygame events
         for event in pygame.event.get():
