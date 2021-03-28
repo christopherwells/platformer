@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.game = game
         self.image = pygame.Surface((32, 32))
-        self.image.fill(CYAN)
+        self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
         self.pos = vector(WIDTH / 2, HEIGHT / 2)
@@ -53,7 +53,7 @@ class Block(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((w, h))
-        self.image.fill(YELLOW)
+        self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y

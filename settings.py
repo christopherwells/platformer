@@ -16,6 +16,7 @@ BLUE = (0, 0, 255)
 CYAN = (0, 255, 255)
 PINK = (255, 0, 255)
 YELLOW = (255, 255, 0)
+SKY = (0, 155, 155)
 
 # sprite specific
 TILE_SIZE = 32
@@ -33,5 +34,6 @@ BLOCK_LIST = [(0, HEIGHT - 40, WIDTH, 40),
               (175, 100, 50, 20)]
 
 # assets
+GAME_FONT = 'Arial'
 game_folder = path.dirname(__file__)
 img_folder = path.join(game_folder, "img")
