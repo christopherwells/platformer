@@ -1,4 +1,5 @@
 from random import randrange, randint
+from os import path
 import pygame
 from pygame.locals import *
 from settings import *
@@ -17,6 +18,18 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.game_font = pygame.font.match_font(GAME_FONT)
+        self.load_data()
+
+    def load_data(self):
+        self.dir = path.dirname(__file__)
+        # high score
+        with open(path.join(self.dir, SCORE_FILE), 'r') as f:
+            # get high score
+            try:
+                self.high_score = int(f.read())
+            # file empty
+            except:
+                self.high_score = 0
 
     def new(self):
         # new game
@@ -113,6 +126,10 @@ class Game:
                        22, WHITE, WIDTH / 2, HEIGHT / 2)
         self.draw_text("Press any key to start.",
                        22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.draw_text("High Score: " + str(self.high_score),
+                       22, WHITE, WIDTH / 2, 15)
+
+        # update display and wait for input
         pygame.display.flip()
         self.wait_for_key()
 
@@ -139,6 +156,17 @@ class Game:
                        22, WHITE, WIDTH / 2, HEIGHT / 2)
         self.draw_text("Press any key to play again.",
                        22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        # new high score
+        if self.score > self.high_score:
+            self.high_score = self.score
+            self.draw_text("New high score!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            with open(path.join(self.dir, SCORE_FILE), 'w') as f:
+                f.write(str(self.score))
+        # show high_score
+        else:
+            self.draw_text("High score: " + str(self.high_score), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+
+        # update display and wait for input
         pygame.display.flip()
         self.wait_for_key()
 

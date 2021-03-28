@@ -35,5 +35,6 @@ BLOCK_LIST = [(0, HEIGHT - 40, WIDTH, 40),
 
 # assets
 GAME_FONT = 'Arial'
+SCORE_FILE = "highscores.txt"
 game_folder = path.dirname(__file__)
 img_folder = path.join(game_folder, "img")
