@@ -1,3 +1,9 @@
+# to run
+> pip install pygame
+> python main .py
+
+Space to jump, left and right arrow keys to move.
+
 # Todo
 - puzzles on the way give you better items and armor
 - enemies get harder as you go up
