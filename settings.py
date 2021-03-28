@@ -1,9 +1,5 @@
 from os import path
 # CONSTANTS
-# game
-TITLE = "Hello world!"
-FPS = 60
-MOB_FREQ = 5000
 
 # window
 WIDTH, HEIGHT = 480, 600
@@ -18,6 +14,16 @@ CYAN = (0, 255, 255)
 PINK = (255, 0, 255)
 YELLOW = (255, 255, 0)
 SKY = (0, 155, 155)
+
+# game
+TITLE = "Hello world!"
+FPS = 60
+MOB_FREQ = 5000
+
+# layers
+BLOCK_LAYER = 1
+PLAYER_LAYER = 2
+MOB_LAYER = 2
 
 # player
 PLAYER_ACC = 0.8

@@ -24,6 +24,7 @@ class Game:
         pygame.mixer.music.load(
             path.join(self.snd_dir, 'Sycamore Drive - Happiness.ogg'))
         # play music on loop
+        pygame.mixer.music.set_volume(0.2)
         pygame.mixer.music.play(loops=-1)
 
     def load_data(self):
@@ -47,7 +48,7 @@ class Game:
     def new(self):
         # new game
         self.score = 0
-        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites = pygame.sprite.LayeredUpdates()
         self.blocks = pygame.sprite.Group()
         self.mobs = pygame.sprite.Group()
         self.mob_timer = 0
@@ -76,11 +77,16 @@ class Game:
         # update
         self.all_sprites.update()
 
-        # spawn mob
+        # spawn a mob
         now = pygame.time.get_ticks()
         if now - self.mob_timer > 5000 + choice([-2000, -1500, -500, 500, 1000]):
             self.mob_timer = now
             Mob(self)
+
+        # collision detection with mobs
+        mob_collision = pygame.sprite.spritecollide(self.player, self.mobs, False)
+        if mob_collision:
+            self.playing = False
 
         # collision detection if falling
         if self.player.vel.y > 0:
@@ -154,7 +160,6 @@ class Game:
         # draw events
         self.screen.fill(SKY)
         self.all_sprites.draw(self.screen)
-        self.screen.blit(self.player.image, self.player.rect)
         self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH / 2, 15)
 
         # flip display after draw events

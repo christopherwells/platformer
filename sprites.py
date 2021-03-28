@@ -21,6 +21,7 @@ class Spritesheet:
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game):
+        self._layer = PLAYER_LAYER
         pygame.sprite.Sprite.__init__(self)
         self.game = game
         # animation
@@ -178,6 +179,7 @@ class Player(pygame.sprite.Sprite):
 
 class Block(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
+        self._layer = BLOCK_LAYER
         pygame.sprite.Sprite.__init__(self)
         self.game = game
         # sprite
@@ -194,6 +196,7 @@ class Block(pygame.sprite.Sprite):
 
 class Mob(pygame.sprite.Sprite):
     def __init__(self, game):
+        self._layer = MOB_LAYER
         self.groups = game.all_sprites, game.mobs
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
