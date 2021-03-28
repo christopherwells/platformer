@@ -183,7 +183,7 @@ class Block(pygame.sprite.Sprite):
         # sprite
         images = [
             self.game.spritesheet1.get_image(630, 140, 70, 70),
-            self.game.spritesheet1.get_image(70, 70, 70, 70)
+            self.game.spritesheet1.get_image(0, 0, 70, 70)
         ]
         self.image = choice(images)
         self.image.set_colorkey(BLACK)

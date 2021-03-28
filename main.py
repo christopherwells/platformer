@@ -84,10 +84,12 @@ class Game:
                 for c in collision:
                     if c.rect.bottom > lowest.rect.bottom:
                         lowest = collision
-                if self.player.pos.y < lowest.rect.centery:
-                    self.player.pos.y = lowest.rect.top + 1
-                    self.player.vel.y = 0
-                    self.player.jumping = False
+                # stop edge clipping on blocks
+                if self.player.pos.x < lowest.rect.right and self.player.pos.x > lowest.rect.left:
+                    if self.player.pos.y < lowest.rect.centery:
+                        self.player.pos.y = lowest.rect.top + 1
+                        self.player.vel.y = 0
+                        self.player.jumping = False
 
         # if player reaches 3/4 height
         if self.player.rect.top <= HEIGHT / 4:
