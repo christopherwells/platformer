@@ -67,13 +67,13 @@ class Player(pygame.sprite.Sprite):
         collision = pygame.sprite.spritecollide(self, self.game.blocks, False)
         self.rect.x -= 2
         # can jump
-        if collision and not self.jumping:
+        if collision and not self.jumping and not self.walking:
             self.jumping = True
             self.vel.y = PLAYER_JUMP
         # moving before jump gives a boost
         if collision and not self.jumping and self.walking:
             self.jumping = True
-            self.vel.y = PLAYER_JUMP * 1.3
+            self.vel.y = PLAYER_JUMP * 1.08
 
     def jump_cut(self):
         if self.jumping:

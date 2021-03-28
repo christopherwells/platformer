@@ -59,7 +59,7 @@ class Game:
             self.events()
             self.draw()
             system('clear')
-            print(self.player.acc)
+            print(self.clock)
 
     def update(self):
         # update
