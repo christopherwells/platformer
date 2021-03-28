@@ -3,6 +3,8 @@
 > 
 > python main .py
 
+!(https://raw.githubusercontent.com/christopherwells/platformer/master/screen.png)[running in manjaro]
+
 Space to jump, left and right arrow keys to move.
 
 # Todo
