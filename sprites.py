@@ -21,13 +21,44 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, game):
         pygame.sprite.Sprite.__init__(self)
         self.game = game
-        self.image = self.game.spritesheet.get_image(614, 1063, 120, 191)
-        self.image.set_colorkey(BLACK)
+        # animation
+        self.walking = False
+        self.jumping = False
+        self.current_frame = 0
+        self.last_update = 0
+        # sprite
+        self.load_images()
+        self.image = self.standing_frames[0]
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
+        # physics
         self.pos = vector(WIDTH / 2, HEIGHT / 2)
         self.vel = vector(0, 0)
         self.acc = vector(0, 0)
+
+    def load_images(self):
+        # standing images
+        self.standing_frames = [
+            self.game.spritesheet.get_image(614, 1063, 120, 191),
+            self.game.spritesheet.get_image(690, 406, 120, 201)
+        ]
+        # walking right images
+        for frame in self.standing_frames:
+            frame.set_colorkey(BLACK)
+        self.walking_frames_right = [
+            self.game.spritesheet.get_image(678, 860, 120, 201),
+            self.game.spritesheet.get_image(692, 1458, 120, 207)
+        ]
+        # use right images but reversed
+        self.walking_frames_left = []
+        for frame in self.walking_frames_right:
+            frame.set_colorkey(BLACK)
+            self.walking_frames_left.append(
+                pygame.transform.flip(frame, True, False))
+        # jump images
+        self.jumping_frame = self.game.spritesheet.get_image(
+            382, 763, 150, 181)
+        self.jumping_frame.set_colorkey(BLACK)
 
     def jump(self):
         # can jump if on a block
@@ -39,6 +70,7 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = -15
 
     def update(self):
+        self.animate()
         # gravity = y value
         self.acc = vector(0, PLAYER_GRAVITY)
         keys = pygame.key.get_pressed()
@@ -53,13 +85,57 @@ class Player(pygame.sprite.Sprite):
         self.vel += self.acc
         # a=Δv/Δt (equation of motion)
         self.pos += self.vel + 0.5 * self.acc
-        # wrap level
-        if self.pos.x > WIDTH:
-            self.pos.x = 0
-        if self.pos.x < 0:
-            self.pos.x = WIDTH
-        # collision check position
+        # player.vel.x = 0 if value is low enough
+        if abs(self.vel.x) < 0.1:
+            self.vel.x = 0
+        # wrap side of screen
+        if self.pos.x > WIDTH + self.rect.width / 2:
+            self.pos.x = 0 - self.rect.width /2
+        if self.pos.x < 0 - self.rect.width /2:
+            self.pos.x = WIDTH + self.rect.width / 2
+
+        # block collision check position
         self.rect.midbottom = self.pos
+
+    def animate(self):
+        # get ticks since init
+        now = pygame.time.get_ticks()
+
+        # if there is no velocity, then player is idle
+        if self.vel.x != 0:
+            self.walking = True
+        else:
+            self.walking = False
+
+        # walking animation
+        if self.walking:
+            if now - self.last_update > ANIMATION_SPEED / 2:
+                self.last_update = now
+                # change animation frame, adjust image rect
+                self.current_frame = (
+                    self.current_frame + 1) % len(self.walking_frames_left)
+                bottom = self.rect.bottom
+                # moving right
+                if self.vel.x > 0:
+                    self.image = self.walking_frames_right[self.current_frame]
+                # moving left
+                else:
+                    self.image = self.walking_frames_left[self.current_frame]
+                self.rect = self.image.get_rect()
+                self.rect.bottom = bottom
+
+        # idle animation
+        if not self.jumping and not self.walking:
+            if now - self.last_update > ANIMATION_SPEED:
+                self.last_update = now
+                # current frame will be whatever remains in standing frames animation
+                self.current_frame = (
+                    self.current_frame + 1) % len(self.standing_frames)
+                # change animation frame, adjust image rect
+                bottom = self.rect.bottom
+                self.image = self.standing_frames[self.current_frame]
+                self.rect = self.image.get_rect()
+                self.rect.bottom = bottom
 
 
 class Block(pygame.sprite.Sprite):
