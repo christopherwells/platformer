@@ -64,9 +64,9 @@ class Game:
             block = Block(self, *b)
             self.all_sprites.add(block)
             self.blocks.add(block)
-        for i in range(8):
+        for i in range(4):
             c = Cloud(self)
-            c.rect.y += 500
+            c.rect.y += 300
         self.loop()
 
     def loop(self):
@@ -117,7 +117,7 @@ class Game:
         # if player reaches 3/4 height
         if self.player.rect.top <= HEIGHT / 4:
             # chance of cloud
-            if randrange(100) < 1:
+            if randrange(100) < 5:
                 Cloud(self)
             # change y to velocity so the level can move
             self.player.pos.y += max(abs(self.player.vel.y), 2)

@@ -259,7 +259,11 @@ class Cloud(pygame.sprite.Sprite):
                                                      int(self.rect.height * scale)))
         self.rect.x = randrange(WIDTH - self.rect.width)
         self.rect.y = randrange(-500, -50)
+        self.vx = randrange(1, 3)
 
     def update(self):
-        if self.rect.top > HEIGHT * 2:
+        #  x speed is constant
+        self.rect.x += self.vx
+
+        if self.rect.y > HEIGHT * 2:
             self.kill()
