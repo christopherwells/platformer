@@ -104,7 +104,9 @@ class Game:
                 lowest = collision[0]
                 for c in collision:
                     if c.rect.bottom > lowest.rect.bottom:
-                        lowest = collision
+                        lowest = collision[0]
+                    else:
+                        pass
                 # stop edge clipping on blocks
                 if self.player.pos.x < lowest.rect.right and self.player.pos.x > lowest.rect.left:
                     if self.player.pos.y < lowest.rect.centery:
